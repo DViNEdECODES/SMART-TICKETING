@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - ticket_server_north
+      - ticket_server_south
+      - ticket_server_east
+      - ticket_server_west
+
+  ticket_server_north:
+    build: ./backend
+    container_name: ticket_server_north
+    environment:
+      - PORT=3001
+      - STAND=North Stand
+    ports:
+      - "3001:3001"
+
+  ticket_server_south:
+    build: ./backend
+    container_name: ticket_server_south
+    environment:
+      - PORT=3002
+      - STAND=South Stand
+    ports:
+      - "3002:3002"
+
+  ticket_server_east:
+    build: ./backend
+    container_name: ticket_server_east
+    environment:
+      - PORT=3003
+      - STAND=East Stand
+    ports:
+      - "3003:3003"
+
+  ticket_server_west:
+    build: ./backend
+    container_name: ticket_server_west
+    environment:
+      - PORT=3004
+      - STAND=West Stand
+    ports:
+      - "3004:3004"
